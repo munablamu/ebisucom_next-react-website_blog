@@ -45,9 +45,9 @@ h3 {
   font-size: var(--heading3);
 }
 
-/* next/image */
-span > img {
-  transition: 0.2s;
+/* next/image TODO: 多分これ機能していない */
+img {
+  transition: 0.2s ease-out;
 }
 
 /* リセット */
