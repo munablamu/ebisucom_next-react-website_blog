@@ -5,6 +5,7 @@ import PostBody from 'components/post-body';
 import { TwoColumn, TwoColumnMain, TwoColumnSidebar } from 'components/two-column';
 import Image from 'next/image';
 import ConvertBody from 'components/convert-body';
+import PostCategories from 'components/post-categories';
 
 export default function Schedule({ title, publish, content, eyecatch, categories }) {
   return (
@@ -30,7 +31,9 @@ export default function Schedule({ title, publish, content, eyecatch, categories
               <ConvertBody contentHTML={content} />
             </PostBody>
           </TwoColumnMain>
-          <TwoColumnSidebar></TwoColumnSidebar>
+          <TwoColumnSidebar>
+            <PostCategories categories={categories} />
+          </TwoColumnSidebar>
         </TwoColumn>
       </article>
     </Container>
