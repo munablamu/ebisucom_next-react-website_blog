@@ -39,6 +39,7 @@ export default function Post({
 
         <figure>
           <Image
+            key={eyecatch.url}
             src={eyecatch.url}
             alt=""
             style={{ objectFit: 'contain', width: '100%', height: 'auto' }}
