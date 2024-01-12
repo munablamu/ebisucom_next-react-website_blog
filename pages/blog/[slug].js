@@ -1,4 +1,4 @@
-import { getPostBySlug } from 'lib/api';
+import { getPostBySlug, getAllSlugs } from 'lib/api';
 import { extractText } from 'lib/extract-text';
 import Meta from 'components/meta';
 import Container from 'components/container';
@@ -56,8 +56,10 @@ export default function Post({ title, publish, content, eyecatch, categories, de
 }
 
 export async function getStaticPaths() {
+  const allSlugs = await getAllSlugs();
+
   return {
-    paths: ['/blog/schedule', '/blog/music', '/blog/micro'],
+    paths: allSlugs.map(({ slug }) => `/blog/${slug}`),
     fallback: false,
   };
 }
