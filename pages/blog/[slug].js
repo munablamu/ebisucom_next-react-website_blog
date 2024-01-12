@@ -12,7 +12,7 @@ import { eyecatchLocal } from 'lib/constants';
 import ConvertBody from 'components/convert-body';
 import PostCategories from 'components/post-categories';
 
-export default function Schedule({ title, publish, content, eyecatch, categories, description }) {
+export default function Post({ title, publish, content, eyecatch, categories, description }) {
   return (
     <Container>
       <Meta
@@ -55,8 +55,15 @@ export default function Schedule({ title, publish, content, eyecatch, categories
   );
 }
 
-export async function getStaticProps() {
-  const slug = 'micro';
+export async function getStaticPaths() {
+  return {
+    paths: ['/blog/schedule', '/blog/music', '/blog/micro'],
+    fallback: false,
+  };
+}
+
+export async function getStaticProps(context) {
+  const slug = context.params.slug;
 
   const post = await getPostBySlug(slug);
 
