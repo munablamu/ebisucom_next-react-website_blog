@@ -1,33 +1,29 @@
-'use client';
-
-// import Meta from 'components/meta';
 import Container from 'components/container';
 import Hero from 'components/hero';
 import PostBody from 'components/post-body';
 import Contact from 'components/contact';
 import { TwoColumn, TwoColumnMain, TwoColumnSidebar } from 'components/two-column';
 import Accordion from 'components/accordion';
-import Image from 'next/image';
+import Image from 'next/legacy/image';
 import eyecatch from 'images/about.jpg';
+
+// サイトに関する情報
+import { siteMeta } from 'lib/constants';
+const { siteTitle, siteUrl } = siteMeta;
+
+// ベースのメタデータ
+import { openGraphMetadata, twitterMetadata } from 'lib/baseMetadata';
 
 export default function About() {
   return (
     <Container>
-      {/* <Meta
-        pageTitle="アバウト"
-        pageDesc="About development activities"
-        pageImg={eyecatch.src}
-        pageImgW={eyecatch.width}
-        pageImgH={eyecatch.height}
-  /> */}
-
       <Hero title="About" subtitle="About development activities" />
 
       <figure>
         <Image
           src={eyecatch}
           alt=""
-          style={{ objectFit: 'contain', width: '100%', height: 'auto' }}
+          layout="responsive"
           sizes="(min-width: 1152px) 1152px, 100vw"
           priority
           placeholder="blur"
@@ -78,3 +74,34 @@ export default function About() {
     </Container>
   );
 }
+
+// メタデータ
+const pageTitle = 'アバウト';
+const pageDesc = 'About development activities';
+const ogpTitle = `${pageTitle} | ${siteTitle}`;
+const ogpUrl = new URL('/about', siteUrl).toString();
+
+export const metadata = {
+  title: pageTitle,
+  description: pageDesc,
+
+  openGraph: {
+    ...openGraphMetadata,
+    title: ogpTitle,
+    description: pageDesc,
+    url: ogpUrl,
+    images: [
+      {
+        url: eyecatch.src,
+        width: eyecatch.width,
+        height: eyecatch.height,
+      },
+    ],
+  },
+  twitter: {
+    ...twitterMetadata,
+    title: ogpTitle,
+    description: pageDesc,
+    images: [eyecatch.src],
+  },
+};

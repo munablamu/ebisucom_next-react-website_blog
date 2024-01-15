@@ -1,7 +1,6 @@
 import { getPostBySlug, getAllSlugs } from 'lib/api';
 import { extractText } from 'lib/extract-text';
 import { prevNextPost } from 'lib/prev-next-post';
-// import Meta from 'components/meta';
 import Container from 'components/container';
 import PostHeader from 'components/post-header';
 import PostBody from 'components/post-body';
@@ -13,6 +12,13 @@ import { eyecatchLocal } from 'lib/constants';
 import ConvertBody from 'components/convert-body';
 import PostCategories from 'components/post-categories';
 import Pagination from 'components/pagination';
+
+// サイトに関する情報
+import { siteMeta } from 'lib/constants';
+const { siteTitle, siteUrl } = siteMeta;
+
+// ベースのメタデータ
+import { openGraphMetadata, twitterMetadata } from 'lib/baseMetadata';
 
 export default async function Post({ params }) {
   const slug = params.slug;
@@ -34,14 +40,6 @@ export default async function Post({ params }) {
 
   return (
     <Container>
-      {/* <Meta
-        pageTitle={title}
-        pageDesc={description}
-        pageImg={eyecatch.url}
-        pageImgW={eyecatch.width}
-        pageImgH={eyecatch.height}
-  /> */}
-
       <article>
         <PostHeader title={title} subtitle="Blog Article" publish={publish} />
 
@@ -89,4 +87,43 @@ export async function generateStaticParams() {
   return allSlugs.map(({ slug }) => {
     return { slug: slug };
   });
+}
+
+export async function generateMetadata({ params }) {
+  const slug = params.slug;
+  const post = await getPostBySlug(slug);
+  const { title: pageTitle, publishDate: publish, content, categories } = post;
+
+  const pageDesc = extractText(content);
+  const eyecatch = post.eyecatch ?? eyecatchLocal;
+
+  const ogpTitle = `${pageTitle} | ${siteTitle}`;
+  const ogpUrl = new URL(`/blog/${slug}`, siteUrl).toString();
+
+  const metadata = {
+    title: pageTitle,
+    description: pageDesc,
+
+    openGraph: {
+      ...openGraphMetadata,
+      title: ogpTitle,
+      description: pageDesc,
+      url: ogpUrl,
+      images: [
+        {
+          url: eyecatch.url,
+          width: eyecatch.width,
+          height: eyecatch.height,
+        },
+      ],
+    },
+    twitter: {
+      ...twitterMetadata,
+      title: ogpTitle,
+      description: pageDesc,
+      images: [eyecatch.url],
+    },
+  };
+
+  return metadata;
 }
