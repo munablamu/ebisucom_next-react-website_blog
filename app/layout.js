@@ -1,4 +1,4 @@
-import { baseMetadata, openGraphMetadata, twitterMetadata } from 'lib/baseMetadata';
+import { baseViewport, baseMetadata, openGraphMetadata, twitterMetadata } from 'lib/baseMetadata';
 
 import '@/styles/globals.css';
 import Layout from 'components/layout';
@@ -25,6 +25,8 @@ export default function RootLayout({ children }) {
     </html>
   );
 }
+
+export const viewport = baseViewport;
 
 export const metadata = {
   ...baseMetadata,
